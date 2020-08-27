@@ -11,6 +11,5 @@
   "bin": [
     "device-agent.exe",
     "device-agent-helper.exe"],
-  "extract_to": "naisdevice_cato",
   "post_install": "device-agent-helper.exe --config-dir \"%appdata%\\naisdevice\" --install"
 }
