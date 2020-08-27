@@ -1,0 +1,1 @@
+Bucket used for experimenting with [Scoop](https://scoop.sh/) installations.
