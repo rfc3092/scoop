@@ -1,0 +1,12 @@
+{
+  "version": "2020-08-18-bdb06cc",
+  "url": [
+    "https://github.com/nais/device/releases/download/2020-08-18-bdb06cc/device-agent.exe",
+    "https://github.com/nais/device/releases/download/2020-08-18-bdb06cc/device-agent-helper.exe"
+  ],
+  "bin": [
+    "device-agent.exe",
+    "device-agent-helper.exe"],
+  "extract_to": "naisdevice",
+  "post_install": "device-agent-helper.exe --config-dir \"%appdata%\\naisdevice\" --install"
+}
