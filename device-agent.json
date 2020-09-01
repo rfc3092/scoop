@@ -4,6 +4,10 @@
     "https://github.com/nais/device/releases/download/2020-09-01-09a686b/device-agent.exe",
     "https://github.com/nais/device/releases/download/2020-09-01-09a686b/device-agent-helper.exe"
   ],
+  "hash": [
+    "9164b6ea507b30b373d6fb7479c507128227c7cbdfe6ef774af92f8e7503bd3a",
+    "4ce7c2d2754bff39bb7c36d4825651bea1571b554dd40ec39f54305948075a2c"
+  ],
   "bin": [
     "device-agent.exe",
     "device-agent-helper.exe"],
