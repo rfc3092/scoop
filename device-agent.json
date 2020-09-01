@@ -1,12 +1,8 @@
 {
-  "version": "2020-08-18-bdb06cc",
+  "version": "2020-09-01-09a686b",
   "url": [
-    "https://github.com/nais/device/releases/download/2020-08-18-bdb06cc/device-agent.exe",
-    "https://github.com/nais/device/releases/download/2020-08-18-bdb06cc/device-agent-helper.exe"
-  ],
-  "hash": [
-    "54cede5c94fe9ae318e98a85e70ab4c426c1cf29a2e2ba7dd0285e1effaedd2d",
-    "0ca01d3b23caac0b11e23394ad0cfdeb3c65e458ac7b49bd8fddbd8bc2d86db0"
+    "https://github.com/nais/device/releases/download/2020-09-01-09a686b/device-agent.exe",
+    "https://github.com/nais/device/releases/download/2020-09-01-09a686b/device-agent-helper.exe"
   ],
   "bin": [
     "device-agent.exe",
