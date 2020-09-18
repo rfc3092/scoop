@@ -10,6 +10,6 @@ where you're free to choose the bucket's `<name>`.
 
 ## Currently supported:
 
-|Name|Current Version|Description|
-|----|---------------|-----------|
-|device-agent|2020-09-01-09a686b|Should cover step 3 to 6 in https://doc.nais.io/device/install.|
+|Name|Description|
+|----|-----------|
+|device-agent|Should cover step 3 to 6 in https://doc.nais.io/device/install.|
