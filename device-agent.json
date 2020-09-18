@@ -1,15 +1,24 @@
 {
   "version": "2020-09-01-09a686b",
   "url": [
-    "https://github.com/nais/device/releases/download/2020-09-01-09a686b/device-agent.exe",
-    "https://github.com/nais/device/releases/download/2020-09-01-09a686b/device-agent-helper.exe"
+    "https://github.com/nais/device/releases/download/2020-09-18-790a08b/device-agent.exe",
+    "https://github.com/nais/device/releases/download/2020-09-18-790a08b/device-agent-helper.exe"
   ],
   "hash": [
-    "9164b6ea507b30b373d6fb7479c507128227c7cbdfe6ef774af92f8e7503bd3a",
-    "4ce7c2d2754bff39bb7c36d4825651bea1571b554dd40ec39f54305948075a2c"
+    "80E39767C13DB19D80C89AD7FD765A19B1E9274E1BD68549F44F7FBE32F43FB1",
+    "109AF66B7A6A2D23E4694952A1E5649C749CCB871077C341BE273A9F7B2D8AC6"
   ],
   "bin": [
     "device-agent.exe",
     "device-agent-helper.exe"],
-  "post_install": "device-agent-helper.exe --config-dir \"%appdata%\\naisdevice\" --install"
+  "pre_install": [
+    "Stop-Process -Name device-agent",
+    "Start-Process powershell -Verb runAs -ArgumentList \"Stop-Service -DisplayName naisdevice-agent-helper\""
+
+  ],
+  "post_install": [
+    "device-agent-helper.exe --config-dir \"%appdata%\\naisdevice\" --install",
+    "Start-Process powershell -Verb runAs -ArgumentList \"Start-Service -DisplayName naisdevice-agent-helper\"",
+    "device-agent.exe"
+  ]
 }
