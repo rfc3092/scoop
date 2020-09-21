@@ -12,11 +12,12 @@
     "device-agent.exe",
     "device-agent-helper.exe"],
   "pre_install": [
-    "Stop-Process -Name device-agent"
-
+    "Stop-Process -Name device-agent",
+    "Start-Process powershell -Verb runAs -ArgumentList \"Stop-Service -Name naisdevice-agent-helper\""
   ],
   "post_install": [
-    "Start-Process powershell -Verb runAs -ArgumentList \"Stop-Service -Name naisdevice-agent-helper\", \"device-agent-helper.exe --config-dir $env:APPDATA'\\naisdevice' --install\", \"Start-Service -Name naisdevice-agent-helper\"",
+    "device-agent-helper.exe --config-dir $env:APPDATA'\\naisdevice' --install\"",
+    "Start-Service -Name naisdevice-agent-helper\"",
     "device-agent.exe"
   ]
 }
