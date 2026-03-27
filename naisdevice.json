@@ -1,5 +1,5 @@
 {
-  "version": "v1.14.6",
+  "version": "v1.14.7",
   "pre_uninstall": [
     "Write-Host 'Stopping naisdevice processes...' -ForegroundColor Yellow",
     "Stop-Process -Name 'naisdevice-systray' -Force -ErrorAction SilentlyContinue",
