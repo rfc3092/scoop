@@ -4,8 +4,31 @@
     "Write-Host 'Stopping naisdevice processes...' -ForegroundColor Yellow",
     "Stop-Process -Name 'naisdevice-systray' -Force -ErrorAction SilentlyContinue",
     "Stop-Process -Name 'naisdevice-agent' -Force -ErrorAction SilentlyContinue",
-    "Write-Host 'Prompting for Admin privileges to stop the naisdevice-helper service and process...' -ForegroundColor Yellow",
-    "Start-Process -FilePath powershell.exe -ArgumentList '-NoProfile -WindowStyle Hidden -Command \"Stop-Service -Name naisdevice-helper -Force -ErrorAction SilentlyContinue; Stop-Process -Name naisdevice-helper -Force -ErrorAction SilentlyContinue; Stop-Process -Name naisdevice-agent -Force -ErrorAction SilentlyContinue\"' -Verb RunAs -Wait"
+    "Write-Host 'Prompting for Admin privileges to stop the naisdevice-helper service...' -ForegroundColor Yellow",
+    "$helperStopScript = @(",
+    "  '$svc = Get-Service -Name ''naisdevice-helper'' -ErrorAction SilentlyContinue'",
+    "  'if ($svc -and $svc.Status -ne ''Stopped'') {'",
+    "  '  Stop-Service -Name ''naisdevice-helper'' -Force -ErrorAction SilentlyContinue'",
+    "  '  try { $svc.WaitForStatus(''Stopped'', [TimeSpan]::FromSeconds(15)) } catch {}'",
+    "  '}'",
+    "  'Stop-Process -Name ''naisdevice-helper'' -Force -ErrorAction SilentlyContinue'",
+    "  'Stop-Process -Name ''naisdevice-agent'' -Force -ErrorAction SilentlyContinue'",
+    "  'Stop-Process -Name ''naisdevice-systray'' -Force -ErrorAction SilentlyContinue'",
+    ")",
+    "$helperStopScriptPath = Join-Path $env:TEMP ('naisdevice-stop-' + [System.Guid]::NewGuid().ToString() + '.ps1')",
+    "try {",
+    "  Set-Content -Path $helperStopScriptPath -Value $helperStopScript -Encoding Ascii",
+    "  $helperStopProcess = Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile', '-WindowStyle', 'Hidden', '-ExecutionPolicy', 'Bypass', '-File', $helperStopScriptPath) -Verb RunAs -Wait -PassThru -ErrorAction Stop",
+    "  if ($helperStopProcess.ExitCode -ne 0) {",
+    "    Write-Error \"Failed to stop naisdevice-helper service. Elevated script exited with code $($helperStopProcess.ExitCode).\"",
+    "    exit 1",
+    "  }",
+    "} catch {",
+    "  Write-Error \"Failed to stop naisdevice-helper service: $($_.Exception.Message)\"",
+    "  exit 1",
+    "} finally {",
+    "  Remove-Item -Path $helperStopScriptPath -Force -ErrorAction SilentlyContinue",
+    "}"
   ],
   "architecture": {
     "64bit": {
@@ -21,8 +44,13 @@
       },
       "post_uninstall": [
         "if ($cmd -eq \"uninstall\") {",
-        "  if (!(Invoke-ExternalCommand \"$env:ProgramW6432\\NAV\\naisdevice\\uninstaller.exe\" /S -RunAs)) {",
-        "    exit 1",
+        "  $uninstaller = \"$env:ProgramW6432\\NAV\\naisdevice\\uninstaller.exe\"",
+        "  if (Test-Path $uninstaller) {",
+        "    if (!(Invoke-ExternalCommand $uninstaller /S -RunAs)) {",
+        "      exit 1",
+        "    }",
+        "  } else {",
+        "    Write-Host 'naisdevice uninstaller.exe not found; skipping vendor uninstall.' -ForegroundColor Yellow",
         "  }",
         "}"
       ]
@@ -40,8 +68,13 @@
       },
       "post_uninstall": [
         "if ($cmd -eq \"uninstall\") {",
-        "  if (!(Invoke-ExternalCommand \"$env:ProgramW6432\\NAV\\naisdevice\\uninstaller.exe\" /S -RunAs)) {",
-        "    exit 1",
+        "  $uninstaller = \"$env:ProgramW6432\\NAV\\naisdevice\\uninstaller.exe\"",
+        "  if (Test-Path $uninstaller) {",
+        "    if (!(Invoke-ExternalCommand $uninstaller /S -RunAs)) {",
+        "      exit 1",
+        "    }",
+        "  } else {",
+        "    Write-Host 'naisdevice uninstaller.exe not found; skipping vendor uninstall.' -ForegroundColor Yellow",
         "  }",
         "}"
       ]
